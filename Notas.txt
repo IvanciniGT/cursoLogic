@@ -1,0 +1,303 @@
+JAVA: 
+    Creado por: Sun Microsystems -> Compradad por Oracle
+    Maquinas virtuales:
+        Oracle
+        Openjdk
+    2 distribuciones:
+        JRE: Java Runtime Environment (java)
+        JDK: Java Development Kit     (java, javac)
+Weblogic: Oracle <- BeaSystems
+    Java Oracle:
+        NOOO!!!! JRE: No vamos a compilar
+        JDK: Si compila (jsp y jfc)
+W3C: HTML, css, xml, ...
+javadoc: Genera es la documentación de un proyecto hecho en JAVA
+
+WEBAPP JAVA:
+    J2EE-> JEE: Java(tm) Enterprise Edition -> Jakarta Enterprise Edition :
+        Estandar que dicta cómo desarrollar apps web con JAVA
+    librerias externas -> .jar
+        Podemos juntar muchos ficheros .class en 1 (empaquetado) -> ZIP -> .jar
+        Librerias de JAVA se distribuyen mediante fichero .jar
+        Parte se entregan empaquetadas dentro del fichero .war
+        Parte que no se entregan empaquetadas en el .war. Se deben cargar en el servidor de apps.
+            Drivers de conexión abases de datos.
+            
+    recursos WEB: imagenes, css, otro tipo de ficheros 
+    Codigo:
+        - servlets -> Precompiladas -> Entensión ficheros: .java -> .class
+        - jsp -> Compilan en tiempo de ejecución -> Requiera JDK -> .jsp
+        - jfc -> Compilan en tiempo de ejecución -> Requiera JDK -> .jfc
+
+    WEB APP - Empaquetar 1 fichero: ZIP -> .war -> .ear
+    
+CLASSPATH=Variable de entorno que dice a la maquiva virtual de JAVA donde:
+    - Estan las librerias .jar que se requieran
+    - Estan los ficheros .class que se requieran
+        
+Si me quiero conectar con uan base de datos:
+    Cadena conexión
+        Nombre BD
+        Tipo de BD
+        Instancia
+        Servidor
+    Usuario/Contraseña
+    Para conectarme con una BD desde JAVA: driver (Va a establecer la conexión con la BD)
+    Para trabajar con una BD desde JAVA:
+        Código SQL
+        Algún framework (de persistencia) que gestione la base de datos (evitando escribir SQL)
+            Hibernate
+            Spring
+        
+AppWeb: 
+    BD: Gestionar el servidor de aplicaciones
+    App: Le pedirá al servidor de apps una conex a la DB
+        
+        
+
+
+
+
+
+Entornos de trabajo:
+    Desarrollo
+    Integración
+    Producción     <-    Alta Disponibilidad (HA) 99,99%
+        Cluster: "Grupo" Aplicaciones
+            Activo-Activo <- NORMAL
+                App1-Copia1     |
+                App1-Copia2      >      Balanceador de carga (URL publica) - WEBSERVER: Apache, NGINX
+                App1-Copia3     |
+            Activo-Paivo
+                App1-Copia1
+                App1-Copia2 (apagada)
+
+
+Cliente: Luis! -> Balanceador -> Servidor1 (EXPLOTADO)
+                              -> Servidor2 
+
+EXPLOTA !!!!! Servidor1: App1-Copia1
+    Luis: Credenciales (Login) -> Sesión 
+        [Tabla de datos- Servidor1: RAM] 
+        (ID de sesión -> Luis - Cookie)
+Servidor2: App1-Copia2
+    Luis . Hay algo en la RAM de LUIS ??? NO
+Servidor3: App1-Copia3
+
+ORACLE COHERENCE!!!
+    Guardar los datos de la RAM en una memoria replicada entre todas las aplicaciones
+    (Cada cado que se guarde en RAM, al menos quiero copia en 2 servidores)
+    
+
+Replicación en 3 servidores RAM 
+
+S1 (EXPLOTA)
+    a-
+    b-
+S2
+    a
+    b
+S3
+    a
+    b
+S4
+    b
+    a
+S5
+    a
+
+WEBLOGIC: 
+    Dominio!
+        Conjunto de servidores, aplicaciones, recursos, ...
+        Que comparten configuración y gestión
+        
+        
+        
+        
+        
+        
+HTTPs:
+    Ayuda a evitar 2 tipos de ataques:
+        - Man in the middle:            Espia que lee los datos que se mandan por la red entre cliente y servidor
+                                        No se puede evitar... lo que puedo es frustrarlo
+                                        Encriptar los datos
+                                            Algoritmos que trabajan con una clave
+                                                - Simetrica (1 clave) : RAPIDO
+                                                - Asimetrica          : LENTO
+                                                    1 clave se usa para cifrar          : Privada
+                                                    1 clave que se usa para descifrar   : Publica
+        - Suplantación de identidad     Me hago pasar por quien no soy
+                                        Certificado emitido por una CA de confianza
+                                            Quien soy YO: Dominio o IP (Nombre de una persona)
+                                                Clave publica
+                                            Quien garantiza que este certificado es original
+                                                Clave publica
+                                                Firma CA
+                                        
+        
+        
+        
+        
+JQNC -> Corrimiento de letras segun el alfabeto ( + 2 )
+IPMB -> Corrimiento de letras segun el alfabeto ( + 1 )
+HOLA        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+HTTP: Metodos:
+        GET
+        POST
+        DELETE
+        PUT
+        HEAD
+        
+COMUNICACION:
+    Emisor          Cliente que accede desde el navegador de internet
+    Receptor        Servidor de aplicaciones (Aplicacion)
+                    URL:
+                        protocolo   +  servidor   + puerto   +    path                 + QueryString
+                        http:// IP o nombre de dominio  + 7001    /miwebapp/sumar.jsp  ? param1=valor  &  param2=otro valor 
+    Mensaje:         
+        IDA :       
+                    REQUEST    paquete(
+                                        etiquetas:
+                                            Cual es vuestro navegador
+                                            IP
+                                            Sistema operativo
+                                            Metodo
+                                        datos:
+                                            archivo WAR
+                                      )
+        VUELTA :    RESPONSE.  paquete(HTML + etiquetas (status code ) )
+    Codigo          HTML
+    Canal           Internet
+    Protocolo       HTTP
+
+        
+COMUNICACION: AMAZON
+    Emisor          Cliente que solicita un pedido
+    Receptor        Amazon
+    Mensaje:         
+        IDA :       REQUEST.   (Producto, Cantidad, Dinero, Dirección)
+        VUELTA :    RESPONSE.  
+                        PAQUETE: 
+                                [Producto, Factura] 
+                                Pegatina: 
+                                    Destino: Direccion
+                                    Origen:  -----
+                                    Nombre: ------
+                                    Fragil: ______
+    Codigo:         Escrito, español
+    Canal:          Internet, carretera
+    Protocolo       Normas de trafico
+
+
+
+PROCESOS: Process
+    HILOS: Threads
+        Programa: Cuentas (Puro CPU)
+        Numero de CPUs (4)
+        4 hilos haciendo cuentas 100%
+
+    Cada peticion que se hace al servidor (REQUEST) -> Se ejecuta en un hilo
+    
+    Proceso es como si fuera la tienda
+    Pool de threads: 10 hilos (10 cajas de un supermercado)
+    Cola unica
+    
+    Me interesa tener MUCHOS hilos en el servidor de apps (Puedo atender a mas peticiones)
+    
+    Controlar si las cajas se saturan   -> Estoy tardando mucho en atender a mis peticiones
+                                            Si tardo demasiado pierdo el cliente... la petición
+                                                TIMEOUT ! -> 30 segundos
+    Controlar si las cajas están vacias -> Desperciando recursos (sueldo cajero... espacio perdido)
+    
+    Que implica abrir un hilo dentro de un proceso:
+        Memoria RAM (ocupar hueco en la RAM)
+        Si se está ejecutando:
+            CPU
+            Buffer de acceso a la RAM
+            Uso de IO de disco duro...
+            Uso de IO de red
+    
+    Pool de hilos:
+       -- Min: No nos importa tanto
+       -- Max: ¿Conocer el número maximo de hilos que yo puedo llegar a abrir?
+                Depende de la aplicación
+    
+    Si yo tengo más peticiones que hilos: Genero cola: BUENO!
+        Controlar el tiempo de espera en la cola!!!!
+            Requisitos del cliente: 1-2 seg
+    
+    
+    
+    
+    
+99 % de las apps en un servidor de aplicaciones: NECESITAR DE UNA BD
+Las bases de datos soportan TRANSACCIONES 
+Una transaccion engloba varias operaciones:
+    BEGIN TRANSACTION -> Se realicen de forma ATOMICA
+        Operacion 1 -> Insertar datos en una tabla Empleados
+        Operacion 2 -> Insertar datos en otra tabla Nominas
+        Operacion 3 -> Modificar datos de una tercera tabla: Numero de empleados de la empresa INCREMENTO
+    COMMIT o ROLLBACK
+
+Driver: Quien crea y destruye las conexiones a la BD
+    Una conexión en un servidor de BD implica que se cree un hilo o incluso un proceso.
+
+Ismael -> Cargado datos (5/10) -> Guardando en RAM asociada a la conexión de Ismael
+Cristobal -> Query <- Ve los datos que Ismael ha cargado parcialmente??? NO
+
+EN las bases de datos, cada conexión es MUY CARA !!!! (Mucha RAM)
+
+
+En mi servidor de apps: WEBLOGIC
+    Numero de hilos que voy a ejecutar MAX: 100
+    Cuanta conexiones necesito a base de datos para atender a 100 usuarios?
+    
+    Cada usuario: Se ejecuta a través e un hilo que TAREAS hace???
+        Petición: 600 ms
+            1º Leer la petición (request)
+            2º Procesarla
+                - Leer datos de una base de datos 200 ms
+                - Leer datos de la RAM
+                - Leer datos de ficheros
+                - Hacer calculos
+                - Componer un HTML para contestar al cliente
+            3º Contestarla
+        
+    % del tiempo de la peticion se va en base de datos: 33%
+
+    100 peticiones en un momento dato, cuantas de esas peticiones estarán accediendo a BD?
+        33 -> Conexiones a base de datos
+        
+    POOL DE CONEXIONES A BD: 2 conexiones
+        
+    Hilo 1                T                                                    T2
+        PU1... LR1 .......|.... BD................ HD...... CPU......... HTML... RS....|. | PU2... LR2 ........... BD2........ HD2...... CPU2......... HTML2... RS2.....
+    Hilo 2
+        ...... BD........ |HD...... CPU......... HTML... RS..... | PU2... LR2 .|.......... BD2........ HD2...... CPU2......... HTML2... RS2.....
+    Hilo 3
+        .. HD...... CPU...|...... HTML... RS..... | PU2... LR2 ........... BD2.|.. HD2...... CPU2......... HTML2... RS2.....
+    Hilo 4
+        .. CPU......... HT|ML... RS..... | PU2... LR2 ........... BD2........ H|D2...... CPU2......... HTML2... RS2.....
+    Hilo 5
+        ... HD...... CPU..|....... HTML... RS..... | PU2... LR2 ........... BD2|........ HD2...... CPU2......... HTML2... RS2.....
+
+    
+    
+    
+    
+    
+

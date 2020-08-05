@@ -36,7 +36,7 @@ def conectar(servidor='', puerto='', dominio='', usuario='', password=''):
                 print('ERROR: No se ha conseguido un nombre de dominio válido. ABORTANDO...')
                 break
             else:
-                print('No ha introducido un dominio valido. Le quedan '+intento+' disponibles')
+                print('No ha introducido un dominio valido. Le quedan '+str(intento)+' disponibles')
 
     print('   Establecido como dominio el valor: '+ dominio)
     
@@ -58,7 +58,7 @@ def conectar(servidor='', puerto='', dominio='', usuario='', password=''):
                 print('ERROR: No se ha conseguido una contraseña válida. ABORTANDO...')
                 break
             else:
-                print('No ha introducido una contraseña valida. Le quedan '+intento+' disponibles')
+                print('No ha introducido una contraseña valida. Le quedan '+str(intento)+' disponibles')
 
     print('   Establecido como contraseña el valor: '+ ("*" * len(password)) )
     
@@ -67,6 +67,23 @@ def conectar(servidor='', puerto='', dominio='', usuario='', password=''):
 
 conectar(servidor='172.31.12.96', puerto='7001', dominio='MI_DOMINIO')
 
-ls()
+# Vamos a poner el codigo de nuestro programa
+##############################################
+domainRuntime()
+ 
+servers = domainRuntimeService.getServerRuntimes();
+print('################################################################')
+print('# Java heap information per server')
+print('################################################################')
+print('%20s %10s %8s %8s %4s' % ('Server','Current','Free','Max','Free'))
+for server in servers:
+   free    = int(server.getJVMRuntime().getHeapFreeCurrent())/(1024*1024)
+   freePct = int(server.getJVMRuntime().getHeapFreePercent())
+   current = int(server.getJVMRuntime().getHeapSizeCurrent())/(1024*1024)
+   max     = int(server.getJVMRuntime().getHeapSizeMax())/(1024*1024)
+   print('%20s %7d MB %5d MB %5d MB %3d%%' % (server.getName(),current,free,max,freePct))
+##############################################
+
 
 disconnect()
+exit()

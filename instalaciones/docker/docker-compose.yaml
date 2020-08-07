@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+    weblogic_service:
+        container_name: weblogic
+        image: store/oracle/weblogic:12.2.1.4
+        ports:
+            - 9001:7001 
+            - 7002:7002 
+            - 7003:7003 
+            - 7004:7004 
+            - 7005:7005 
+            - 9002:9002
+        volumes:
+            - /home/ubuntu/environment/curso/instalaciones/docker:/u01/oracle/properties
+        environment:
+            DOMAIN_NAME: base_domain
+            JAVA_OPTIONS: -Djava.security.egd=file:/dev/./urandom
+    mariadb:
+        image: mariadb
+        container_name: mariadb
+        ports:
+          - 3307:3306
+        environment:
+              MYSQL_ROOT_PASSWORD: password
+              MYSQL_DATABASE: prueba
+              MYSQL_USER: curso
+              MYSQL_PASSWORD: password
+      

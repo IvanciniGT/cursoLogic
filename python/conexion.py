@@ -85,5 +85,14 @@ for server in servers:
 ##############################################
 
 
+#edit()
+#startEdit()
+
+# CAMBIOS WEBLOGIC
+# getMBean("Servers/AdminServer") equivalente a cmo.getServers()[0]
+#validate()
+#save()
+
+
 disconnect()
 exit()

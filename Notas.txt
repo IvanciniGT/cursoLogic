@@ -301,3 +301,118 @@ En mi servidor de apps: WEBLOGIC
     
     
 
+# Pasos para configurar una webapp en Weblogic (POOLS)
+1º Numero de hilos máximo (POOL THREADS). Depende de:
+    - Capacidad máquina (500)
+        - Monitorizar a traves del tiempo:
+            - Pongo un valor inicial: 400
+                - Se usan todas?
+                    SI -> Necesito mirar la cola
+                    NO -> Me sobran.. lo puedo bajar
+                - Se genera cola? Cuánto tiempo están en cola?
+                    SI -> OK BIEN
+                    Tiempo?
+                        Aceptable: OK 
+                        No Aceptable: Más hilos
+                - Que pasa con la RAM y CPU
+        - Sobrecargar la app en pruebas: PRUEBA
+            - Tiempo de respuesta de la APP en distintos escenarios:
+                 - 1 usuario (LINEA DE BASE) -> NO SE DEGRADE
+                    NO OK -> Problema en DESARROLLO
+                    SI OK -> Sigo mirando
+                 - N/2 usuarios: N: Numero de usuarios previstos "concurrentemente" -> 
+                                 N: 10-15% Usuarios nominales (total de usuarios que usan el sistema)
+                                 Usuarios nominales: 1000 usuarios
+                                 Concurrentes: N:     150 usuarios PICO
+                    - 75 usuarios (LINEA EN CARGA)
+                            NO OK -> Problema en CONFIGURACION o RECURSOS
+                                CONFIGURACION -> COLA LLENA -> Mas hilos (Cola)
+                                RECURSOS ->      COLA NO ESTA LLENA 
+                                                    CPU 100% -> Necesito escalar horizontalmente
+                                                        Otra copia trabajando en paralelo: CLUSTER
+                                                    RAM 100% - CPU 60% -> Más RAM
+                                                    RAM 100% - CPU 90% -> OTRA MAQUINA
+                            SI OK -> Sigo mirando
+                 - N usuario : Total de usuario: 150 (LINEA DE PICO)
+                        Hacemos el mismo estudio de antes
+                 - 2·N -> Caracter informativo
+    POOL DE BD
+        COLA EJECUTORES-HILOS LLENA????
+            NO: OK
+            SI: BUENO
+                Si tiempo no aceptable? Mirar el pool de BD
+                    Se hace cola en el POOL DE BD   
+                        NO: Me sobran conexiones
+                        SI: ??? Tiempo de estancia en la cola de BD
+                            Tiempo de espera para BD = Tiempo de espera EJECUTORES
+
+                    100 peticiones app : Tiempo de espera de 2 seg
+                                         Tiempo de espera de conexiones bd: 2 seg
+                        El cuello de botella está en BD:
+                            -> Recursos insuficientes en BD (MAQUINA)
+                            -> POOL BD más grande
+    
+    SERVICIOS WEB
+        APLICACION WEB:
+           - Protocolo: http(s)
+                Tipo de archivo se mandan al cliente (REQUEST-> RESPONSE)
+                    Html: Tim Berners (html+http)
+                        Marcas: 
+                            Titulares
+                            Parrafos
+                            Listas letras
+                            Tablas
+                            Imagenes
+                            Estilos <- CSS
+                                Tipo de letra, tamaño de letra, color de fondo o de letra, márgenes
+            - Cliente: Personas física que accede a través de un navegador.
+                Navegador:  Software que permite la realización de peticiones HTTP y la  
+                            Visualización de archivos HTML
+            
+            - Cliente:  (SEUR) -> Servidor (AMAZON)
+                Petición? Qué pedidos debo entregar hoy???
+                Programa en SEUR -> Programa AMAZON: Qué pedidos debo entregar hoy???
+                    NO VALE EL FORMATO HTML-> Estaba pensado para seres HUMANOS NO PROGRAMAS
+                    Buscamos otros formatos de intercambio de DATOS:
+                        XML     ->  SOAP (HTTP(TCP/IP)) -> WEBLOGIC: Servicios web
+                        JSON    ->  REST (HTTP(TCP/IP)) -> WEBLOGIC: Servicios REST
+                Los programas de un servidor WEB que están pensados para atender a otros programas,
+                    y que contestan o bien en XML o bien en JSON: SON LOS SERVICIOS WEB
+        
+Comunicacion entre seres humanos:
+    Temporalidad de la comunicación:
+    - Llamada telefonica: Comunicación SINCRONA (requiere a emisor y receptor conectados)
+    - MENSAJE (Whatsapp): Comunicación ASINCRONA (requiere a emisor y NO REQUIERE receptor conectados)
+        ??? POR QUE ??? SISTEMA DE MENSAJERIA: Whatsapp
+        SISTEMA DE MENSAJERIA: GARANTE DE LA ENTREGA DEL MENSAJE
+Comunicacion entre programas: IGUAL QUE LOS SERES HUMANOS
+    Comunición síncrona
+    Comunición asíncrona
+        SISTEMA DE MENSAJERIA
+            JMS: Protocolo de comunicación de mensajes: Dentro del estandar J2EE -> JEE
+                ActiveMQ   |
+                RabbitMQ    >   Servidor de Whatsapp
+                Kafka      |
+            
+                POOL DE CONEXIONES AL SISTEMA JMS: Tengo que monitorizar y calibrar
+    DEPENDE
+    
+    programa de pago en un TPV(Ordenador) -> Pasarela de PAGO (Banco)
+                                        SOAP(XML)
+        Síncrona?  Si el banco no está operativo, el pago no se puede hacer
+            PAGOS EN ESTABLECIMIENTOS SON SINCRONOS
+        Asíncrona? Si el banco no está operativo, ya le llegará el aviso del cargo
+            RIESGO: El saldo en la cuenta
+            PEAJE: CARGO ES ASINCRONO... por qué?
+                GENERO UN ATASCO EN EL PEAJE
+                    DEJANDO A LA GENTE ATRAPADA: URGENCIA MEDICA
+
+
+
+
+ls /u01/oracle/user_projects/domains/base_domain/servers/AdminServer/upload/mariadb-java-client-2.6.2.jar/app/mariadb-java-client-2.6.2.jar
+
+
+
+
+JMETER (Free) - LoadRunner (Pago HP)

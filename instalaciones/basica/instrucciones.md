@@ -35,7 +35,8 @@ export MW_HOME=/home/ubuntu/environment/wls12214
 
 cd /home/ubuntu/environment/wls12214/oracle_common/common/bin
 ./commEnv.sh      # Establece varias de entorno para poder operar sobre weblogic
-./wslt.sh         # CLI DE WEBLOGIC
+./wlst.sh         # CLI
+DE WEBLOGIC
 
 
 ## Creación del dominio y servidor
